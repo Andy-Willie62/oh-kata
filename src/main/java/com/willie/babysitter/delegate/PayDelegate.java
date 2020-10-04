@@ -45,6 +45,17 @@ public class PayDelegate {
         // Get time strings
         List<String> hours = Times.getHoursList(0, 23);
         
+        // Check for invalid times
+        if (request.getStartHour() == -1) {
+            return PayResponse.ErrorResponse("Please select a Start Time.");
+        }
+        if (request.getBedtimeHour() == -1) {
+            return PayResponse.ErrorResponse("Please select a Bed Time.");
+        }
+        if (request.getEndHour() == -1) {
+            return PayResponse.ErrorResponse("Please select an End Time.");
+        }
+        
         // Check startTime
         if (request.getStartHour() < Constants.MINIMUM_START_HOUR) {
             return PayResponse.ErrorResponse("Invalid Start Time before " + hours.get(Constants.MINIMUM_BEDTIME_HOUR));

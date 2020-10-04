@@ -4,6 +4,9 @@
 package com.willie.babysitterproject;
 
 import com.willie.babysitter.constants.Constants;
+import com.willie.babysitter.delegate.PayDelegate;
+import com.willie.babysitter.delegate.PayRequest;
+import com.willie.babysitter.delegate.PayResponse;
 import com.willie.babysitter.times.Times;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -36,45 +39,25 @@ public class BabySitter extends Application {
         ObservableList<String> endTimeOptions = FXCollections.observableArrayList(Times.getHoursList(Constants.MINIMUM_END_HOUR, Constants.MAXIMUM_END_HOUR));
         final ChoiceBox endTimeChoice = new ChoiceBox(endTimeOptions);
 
-        // StartTime is between 5PM and midnight
+        // StartTime
         Text startLabel = new Text("Start time:");
         root.add(startLabel, 0, 0);
         root.add(startTimeChoice, 1, 0);
         
-        // Validate startTime
-        // TODO Alter the BedTime and EndTime select options based on selected StartTime wherre BedTime is between StartTime and Midnight
-//        startTimeChoice.getSelectionModel().selectedIndexProperty().addListener(
-//                new ChangeListener<Number>() {
-//                    public void changed(ObservableValue ov, Number value, Number new_value) {
-//                        String startStr = (String) startTimeChoice.getSelectionModel().getSelectedItem();
-//                        String bedStr = (String) bedTimeChoice.getSelectionModel().getSelectedItem();
-//                        String endStr = (String) endTimeChoice.getSelectionModel().getSelectedItem();
-//                        System.out.println("Start: start=" + startStr + ", bed=" + bedStr + ", end=" + endStr); // TODO Replace
-//                    }
-//                });
+        //TODO An enhancement that may be nice to have is to set the select options for BedTime when StartTime is chosen (and for EndTime when BedTime is chosen).
+        // This would prevent the user from selecting invalid times, like bedtime before start time.
+        // To do this we'd not only need to dynamically modify the select options, but potentially un-select times that may be invalid to force the user to re-select.
+        // This is outside the scope at this time.
         
         // BedTime
         Text bedtimeLabel = new Text("Bed time:");
         root.add(bedtimeLabel, 0, 1);
         root.add(bedTimeChoice, 1, 1);
 
-        // Validate bedTime        
-        // TODO Alter the EndTime select options based on selected BedTime where EndTime is between StartTime+1 and 4AM
-//        bedTimeChoice.getSelectionModel().selectedIndexProperty().addListener(
-//                new ChangeListener<Number>() {
-//                    public void changed(ObservableValue ov, Number value, Number new_value) {
-//                        String startStr = (String) startTimeChoice.getSelectionModel().getSelectedItem();
-//                        String bedStr = (String) bedTimeChoice.getSelectionModel().getSelectedItem();
-//                        String endStr = (String) endTimeChoice.getSelectionModel().getSelectedItem();
-//                        System.out.println("Bed: start=" + startStr + ", bed=" + bedStr + ", end=" + endStr); // TODO Replace
-//                    }
-//                });
-
         // EndTime
         Text endLabel = new Text("End time:");
         root.add(endLabel, 0, 2);
         root.add(endTimeChoice, 1, 2);
-        
         
         // Calculate babysitter pay
         Button calculateButton = new Button("Calculate");
@@ -90,7 +73,16 @@ public class BabySitter extends Application {
                 int start = Times.getHour(startTime);
                 int bed = Times.getHour(bedTime);
                 int end = Times.getHour(endTime);
-                GuiUtils.errorAlert("Calc: start=" + start + ", bed=" + bed + ", end=" + end); // TODO Remove
+
+                // Calculate Pay
+                PayDelegate payDelegate = new PayDelegate();
+                PayRequest request = new PayRequest(start, bed, end);
+                PayResponse response = payDelegate.calculatePay(request);
+                if (response.getPayStatus() != PayResponse.OK) {
+                    GuiUtils.errorAlert(response.getPayMessage());
+                } else {
+                    GuiUtils.informationAlert("Amount Earned= $" + response.getPay());
+                }
             }
         });
         

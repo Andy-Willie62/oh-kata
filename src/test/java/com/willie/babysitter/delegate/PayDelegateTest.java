@@ -16,14 +16,14 @@ public class PayDelegateTest {
         
         request = new PayRequest(0, 0, 0);
         payDelegate.normalizeTimes(request);
-        System.out.println("request=" + request.toString());
+        //System.out.println("request=" + request.toString());
         assertEquals(24, request.getStartHour());
         assertEquals(24, request.getBedtimeHour());
         assertEquals(24, request.getEndHour());
 
         request = new PayRequest(17, 0, 4);
         payDelegate.normalizeTimes(request);
-        System.out.println("request=" + request.toString());
+        //System.out.println("request=" + request.toString());
         assertEquals(17, request.getStartHour());
         assertEquals(24, request.getBedtimeHour());
         assertEquals(28, request.getEndHour());
@@ -37,17 +37,17 @@ public class PayDelegateTest {
 
         request = new PayRequest(17, 18, 19);
         response = payDelegate.validatePayRequest(request);
-        System.out.println("Response=" + response);
+        //System.out.println("Response=" + response);
         assertEquals(PayResponse.OK, response.getPayStatus());
         
         request = new PayRequest(17, 0, 4);
         response = payDelegate.validatePayRequest(request);
-        System.out.println("Response=" + response);
+        //System.out.println("Response=" + response);
         assertEquals(PayResponse.OK, response.getPayStatus());
         
         request = new PayRequest(18, 21, 1);
         response = payDelegate.validatePayRequest(request);
-        System.out.println("Response=" + response);
+        //System.out.println("Response=" + response);
         assertEquals(PayResponse.OK, response.getPayStatus());
     }
     
@@ -60,13 +60,13 @@ public class PayDelegateTest {
         // Invalid start time
         request = new PayRequest(15, 21, 1);
         response = payDelegate.validatePayRequest(request);
-        System.out.println("Response=" + response);
+        //System.out.println("Response=" + response);
         assertEquals(PayResponse.ERROR, response.getPayStatus());
 
         // Invalid end time
         request = new PayRequest(17, 21, 5);
         response = payDelegate.validatePayRequest(request);
-        System.out.println("Response=" + response);
+        //System.out.println("Response=" + response);
         assertEquals(PayResponse.ERROR, response.getPayStatus());
 
     }
