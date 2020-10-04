@@ -91,5 +91,15 @@ public class PayDelegateTest {
         response = payDelegate.calculatePay(request);
         assertEquals(PayResponse.OK, response.getPayStatus());
         assertEquals("Incorrect Pay", (3*Constants.START_TO_BEDTIME_RATE + 3*Constants.BEDTIME_TO_MIDNIGHT_RATE + 1*Constants.MIDNIGHT_TO_END_RATE), response.getPay());
+
+        request = new PayRequest(23, 23, 2);
+        response = payDelegate.calculatePay(request);
+        assertEquals(PayResponse.OK, response.getPayStatus());
+        assertEquals("Incorrect Pay", (1*Constants.BEDTIME_TO_MIDNIGHT_RATE + 2*Constants.MIDNIGHT_TO_END_RATE), response.getPay());
+
+        request = new PayRequest(21, 23, 23);
+        response = payDelegate.calculatePay(request);
+        assertEquals(PayResponse.OK, response.getPayStatus());
+        assertEquals("Incorrect Pay", (2*Constants.START_TO_BEDTIME_RATE), response.getPay());
     }
 }
