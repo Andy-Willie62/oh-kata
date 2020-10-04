@@ -1,7 +1,7 @@
 /*
  * PayRequest - Request object for PayDelegate.
  */
-package Delegate;
+package com.willie.babysitter.delegate;
 
 /**
  *
@@ -12,6 +12,12 @@ public class PayRequest {
     private int bedtimeHour;
     private int endHour;
 
+    public PayRequest(int startHour, int bedtimeHour, int endHour) {
+        this.startHour = startHour;
+        this.bedtimeHour = bedtimeHour;
+        this.endHour = endHour;
+    }
+    
     public int getStartHour() {
         return startHour;
     }

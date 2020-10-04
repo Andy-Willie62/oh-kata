@@ -1,5 +1,5 @@
 /*
- * Tests for the times class
+ * Tests for the Times class
  */
 package test.com.willie.babysitter.times;
 

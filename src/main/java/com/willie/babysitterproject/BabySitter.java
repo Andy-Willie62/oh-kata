@@ -3,6 +3,7 @@
  */
 package com.willie.babysitterproject;
 
+import com.willie.babysitter.constants.Constants;
 import com.willie.babysitter.times.Times;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -28,11 +29,11 @@ public class BabySitter extends Application {
         root.setVgap(6);
 
         // Setup the Select Options
-        ObservableList<String> startTimeOptions = FXCollections.observableArrayList(Times.getHoursList(17, 0));
+        ObservableList<String> startTimeOptions = FXCollections.observableArrayList(Times.getHoursList(Constants.MINIMUM_START_HOUR, Constants.MAXIMUM_START_HOUR));
         final ChoiceBox startTimeChoice = new ChoiceBox(startTimeOptions);
-        ObservableList<String> bedTimeOptions = FXCollections.observableArrayList(Times.getHoursList(17, 0));
+        ObservableList<String> bedTimeOptions = FXCollections.observableArrayList(Times.getHoursList(Constants.MINIMUM_BEDTIME_HOUR, Constants.MAXIMUM_BEDTIME_HOUR));
         final ChoiceBox bedTimeChoice = new ChoiceBox(bedTimeOptions);
-        ObservableList<String> endTimeOptions = FXCollections.observableArrayList(Times.getHoursList(18, 4));
+        ObservableList<String> endTimeOptions = FXCollections.observableArrayList(Times.getHoursList(Constants.MINIMUM_END_HOUR, Constants.MAXIMUM_END_HOUR));
         final ChoiceBox endTimeChoice = new ChoiceBox(endTimeOptions);
 
         // StartTime is between 5PM and midnight
@@ -41,6 +42,7 @@ public class BabySitter extends Application {
         root.add(startTimeChoice, 1, 0);
         
         // Validate startTime
+        // TODO Alter the BedTime and EndTime select options based on selected StartTime wherre BedTime is between StartTime and Midnight
 //        startTimeChoice.getSelectionModel().selectedIndexProperty().addListener(
 //                new ChangeListener<Number>() {
 //                    public void changed(ObservableValue ov, Number value, Number new_value) {
@@ -51,12 +53,13 @@ public class BabySitter extends Application {
 //                    }
 //                });
         
-        // BedTime is between StartTime and Midnight
+        // BedTime
         Text bedtimeLabel = new Text("Bed time:");
         root.add(bedtimeLabel, 0, 1);
         root.add(bedTimeChoice, 1, 1);
 
         // Validate bedTime        
+        // TODO Alter the EndTime select options based on selected BedTime where EndTime is between StartTime+1 and 4AM
 //        bedTimeChoice.getSelectionModel().selectedIndexProperty().addListener(
 //                new ChangeListener<Number>() {
 //                    public void changed(ObservableValue ov, Number value, Number new_value) {
@@ -67,7 +70,7 @@ public class BabySitter extends Application {
 //                    }
 //                });
 
-        // EndTime is between StartTime+1 and 4AM
+        // EndTime
         Text endLabel = new Text("End time:");
         root.add(endLabel, 0, 2);
         root.add(endTimeChoice, 1, 2);
