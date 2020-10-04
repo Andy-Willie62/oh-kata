@@ -4,11 +4,7 @@
 package com.willie.babysitterproject;
 
 import com.willie.babysitter.times.Times;
-import java.util.ArrayList;
-import java.util.List;
 import javafx.application.Application;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -17,7 +13,6 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
@@ -31,41 +26,72 @@ public class BabySitter extends Application {
         root.setAlignment(Pos.CENTER);
         root.setHgap(10);
         root.setVgap(6);
-        
+
+        // Setup the Select Options
+        ObservableList<String> startTimeOptions = FXCollections.observableArrayList(Times.getHoursList(17, 0));
+        final ChoiceBox startTimeChoice = new ChoiceBox(startTimeOptions);
+        ObservableList<String> bedTimeOptions = FXCollections.observableArrayList(Times.getHoursList(17, 0));
+        final ChoiceBox bedTimeChoice = new ChoiceBox(bedTimeOptions);
+        ObservableList<String> endTimeOptions = FXCollections.observableArrayList(Times.getHoursList(18, 4));
+        final ChoiceBox endTimeChoice = new ChoiceBox(endTimeOptions);
+
         // StartTime is between 5PM and midnight
         Text startLabel = new Text("Start time:");
         root.add(startLabel, 0, 0);
-        final ObservableList<String> startTimeOptions = FXCollections.observableArrayList("5PM", "6PM", "7PM", "8PM", "9PM", "10PM", "11PM", "12AM");
-        final ChoiceBox startTimeChoice = new ChoiceBox(startTimeOptions);
         root.add(startTimeChoice, 1, 0);
         
-        startTimeChoice.getSelectionModel().selectedIndexProperty().addListener(
-                new ChangeListener<Number>() {
-                    public void changed(ObservableValue ov, Number value, Number new_value) {
-                        System.out.println("StartTime=" + startTimeOptions.get(new_value.intValue()));
-                    }
-                });
+        // Validate startTime
+//        startTimeChoice.getSelectionModel().selectedIndexProperty().addListener(
+//                new ChangeListener<Number>() {
+//                    public void changed(ObservableValue ov, Number value, Number new_value) {
+//                        String startStr = (String) startTimeChoice.getSelectionModel().getSelectedItem();
+//                        String bedStr = (String) bedTimeChoice.getSelectionModel().getSelectedItem();
+//                        String endStr = (String) endTimeChoice.getSelectionModel().getSelectedItem();
+//                        System.out.println("Start: start=" + startStr + ", bed=" + bedStr + ", end=" + endStr); // TODO Replace
+//                    }
+//                });
         
         // BedTime is between StartTime and Midnight
         Text bedtimeLabel = new Text("Bed time:");
         root.add(bedtimeLabel, 0, 1);
-        TextField bedtimeField = new TextField();
-        root.add(bedtimeField, 1, 1);
-        
-        // EndTime is between StartTime and 4AM
+        root.add(bedTimeChoice, 1, 1);
+
+        // Validate bedTime        
+//        bedTimeChoice.getSelectionModel().selectedIndexProperty().addListener(
+//                new ChangeListener<Number>() {
+//                    public void changed(ObservableValue ov, Number value, Number new_value) {
+//                        String startStr = (String) startTimeChoice.getSelectionModel().getSelectedItem();
+//                        String bedStr = (String) bedTimeChoice.getSelectionModel().getSelectedItem();
+//                        String endStr = (String) endTimeChoice.getSelectionModel().getSelectedItem();
+//                        System.out.println("Bed: start=" + startStr + ", bed=" + bedStr + ", end=" + endStr); // TODO Replace
+//                    }
+//                });
+
+        // EndTime is between StartTime+1 and 4AM
         Text endLabel = new Text("End time:");
         root.add(endLabel, 0, 2);
-        TextField endField = new TextField();
-        root.add(endField, 1, 2);
+        root.add(endTimeChoice, 1, 2);
         
+        
+        // Calculate babysitter pay
         Button calculateButton = new Button("Calculate");
         calculateButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                System.out.println("Calc clicked!"); // TODO Replace
+                // Get the string values
+                String startTime = (String) startTimeChoice.getSelectionModel().getSelectedItem();
+                String bedTime = (String) bedTimeChoice.getSelectionModel().getSelectedItem();
+                String endTime = (String) endTimeChoice.getSelectionModel().getSelectedItem();
+                
+                // Convert to military time
+                int start = Times.getHour(startTime);
+                int bed = Times.getHour(bedTime);
+                int end = Times.getHour(endTime);
+                GuiUtils.errorAlert("Calc: start=" + start + ", bed=" + bed + ", end=" + end); // TODO Remove
             }
         });
         
+        // Show the screen
         StackPane centerBtn = new StackPane();
         centerBtn.getChildren().add(calculateButton);
         root.add(centerBtn, 0, 3, 2, 1);
@@ -84,4 +110,5 @@ public class BabySitter extends Application {
     public static void main(String[] args) {
         launch(args);
     }
+    
 }

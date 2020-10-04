@@ -42,4 +42,21 @@ public class Times {
         
         return results;
     }
+    
+    /**
+     * Return the military hour for the hour string.
+     * @param hourText - hour text that matches what is return from {@code getHoursList()}
+     * @return int - between 0 and 23.
+     */
+    public static int getHour(String hourText) {
+        if (hourText == null) {
+            return -1;
+        }
+        for (int i = 0; i < hours.length; i++) {
+            if (hourText.equals(hours[i])) {
+                return i;
+            }
+        }
+        return -1;
+    }
 }

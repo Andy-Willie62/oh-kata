@@ -107,13 +107,10 @@ public class TimesTest extends TestCase {
 
     @Test
     public void testBadGetHour() {
-        int hourNumber = Times.getHour("12 AM");
-        assertEquals("-1 indicates an invaid hour", -1, hourNumber);
-        
-        int hourNumber = Times.getHour("1P");
-        assertEquals("-1 indicates an invaid hour", -1, hourNumber);
-        
-        int hourNumber = Times.getHour("OH");
-        assertEquals("-1 indicates an invaid hour", -1, hourNumber);
+        assertEquals("-1 indicates an invaid hour", -1, Times.getHour(null));
+        assertEquals("-1 indicates an invaid hour", -1, Times.getHour(""));
+        assertEquals("-1 indicates an invaid hour", -1, Times.getHour("12 AM"));
+        assertEquals("-1 indicates an invaid hour", -1, Times.getHour("1P"));
+        assertEquals("-1 indicates an invaid hour", -1, Times.getHour("OH"));
     }
 }
