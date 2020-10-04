@@ -12,6 +12,9 @@ public class PayRequest {
     private int bedtimeHour;
     private int endHour;
 
+    public PayRequest() {
+    }
+    
     public PayRequest(int startHour, int bedtimeHour, int endHour) {
         this.startHour = startHour;
         this.bedtimeHour = bedtimeHour;

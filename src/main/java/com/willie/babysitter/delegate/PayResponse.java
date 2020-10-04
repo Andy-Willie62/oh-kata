@@ -56,6 +56,7 @@ public class PayResponse {
     public String toString() {
         StringBuilder value = new StringBuilder();
         value.append("PayResponse:");
+        value.append("\n  Pay=" + pay);
         value.append("\n  PayStatus=" + payStatus);
         value.append("\n  PayMessage=" + payMessage);
         return value.toString();
